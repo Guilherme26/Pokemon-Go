@@ -1,0 +1,27 @@
+°Se o Pokemon não fugir da Pokebola, ele é do Jogador.
+°Simular uma partida com um número pré-definido de jogadores.
+°Os jogadores devem maximixar o Score, que é dado pelos pokemons capturados.
+	°O score de um jogador é dado pela soma de todos os CP's de seus pokemon.
+°Criar um mapa com Pokestops e Pokemons espalhados.
+	°Pokestops são usados para recarregar pokebolas.
+	°A recarga só é possível se o jogador estiver com 0(ZERO) pokebolas.
+°Cada pokemon possui um Combat Power(CP) associado.
+°Células do mapa com código 0 e 6 representam, respectivamente, células vazias e pokestops.
+°Ao longo do mapa podem haver coisas que causam danos aos pokemons do jogador. Esses danos são representados por números negativos que são subtraídos do score de um jogador caso ele decida se deslocar para aquela posição. Desta forma, sempre escolher as posições do mapa em que há menor dano.
+°Cada jogador começa o jogo com 3 Pokebolas, e uma bola é gasta para capturar qualquer pokemon.
+
+°O número máximo de jogadas de um jogador é 3N-1, onde N representa a dimensão do mapa quadrado. Assim, para um mapa de
+tamanho 3, o jogador tem 9 locais para visitar e 8 deslocamentos possíveis.
+
+°O número de pokemon com CP's altos será o critério de desempate, caso haja. Caso persista o empate, deve-se usar o número de passos de cada jogador como critério.
+° O jogador não pode passar pelo mesmo caminho mais de uma vez, não pode capturar o mesmo pokemon e utilizar o mesmo pokestop mais de uma vez. Contudo, o pokestop pode ficar disponível para os outros jogadores.
+
+°Se um jogador estiver em uma posição cercada por células já visitadas, o jogo acaba para o mesmo.
+
+
+
+
+
+
+gcc -c funções.c                         
+Gcc main.c funções.o

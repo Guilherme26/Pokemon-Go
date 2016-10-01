@@ -45,64 +45,98 @@ void exibe_jogadores(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
 
 //This method makes player find place to walk
 int andar(t_jogador *jogador, int numero_de_jogadores, int **mapa, int tamanho_do_mapa){
-	int i = 0, *vizinhos = NULL, maior = 0, indice_maior = 0;
+	int i = 0, *vizinhos = NULL, maior = 0, indice_maior = 0, pokebolas = possui_pokebolas(*jogador);
 
 	vizinhos = explorar(mapa, jogador->linha, jogador->coluna, tamanho_do_mapa);
 
-
-	for(; i<NUM_VIZINHOS; i++){
-		if((vizinhos[i] > maior) && (vizinhos[i] != 7)){
-			maior = vizinhos[i];
-			indice_maior = i;
+	if(!pokebolas){
+		for(i=0; i<NUM_VIZINHOS; i++){
+			if(vizinhos[i]==6){
+				mapa[jogador->linha][jogador->coluna] = INVALIDO;
+				move(jogador, i);
+				jogador->passos++;
+				pokestop(jogador);
+				return 1;
+			}
 		}
 	}
-	switch(indice_maior){
+	else{
+		for(i=0; i<NUM_VIZINHOS; i++){
+			if((vizinhos[i] > maior) && (vizinhos[i] != INVALIDO) && (vizinhos[i] != 6)){
+				maior = vizinhos[i];
+				indice_maior = i;
+			}
+		}
+		mapa[jogador->linha][jogador->coluna] = INVALIDO;
+		move(jogador, indice_maior);
+		jogador->passos++;
+		jogador->pokebolas--;
+		jogador->pokemon[indice_maior-1];
+		jogador->pontos += indice_maior;
+		return 1;
+	}
+
+	if(!pokebolas){
+		for(i=0; i<NUM_VIZINHOS; i++){
+			if((vizinhos[i] == 0)){
+				mapa[jogador->linha][jogador->coluna] = INVALIDO;
+				move(jogador, i);
+				jogador->passos++;
+				return 1;
+			}
+		}
+		for(i=0; i<NUM_VIZINHOS; i++){
+			if(vizinhos[i] != 7){
+				mapa[jogador->linha][jogador->coluna] = INVALIDO;
+				move(jogador, i);
+				jogador->passos++;
+				return 1;
+			}
+		}
+	}
+	
+	free(vizinhos);
+}
+
+void move(t_jogador *jogador, int posicao){
+	switch(posicao){
 		case 0:{
-			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha--;
 			jogador->coluna--;
 			break;
 		}
 		case 1:{
-			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha--;
 			break;
 		}
 		case 2:{
-			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha--;
 			jogador->coluna++;
 			break;
 		}
 		case 3:{
-			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->coluna--;
 			break;
 		}
 		case 4:{
-			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->coluna++;
 			break;
 		}
 		case 5:{
-			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha++;
 			jogador->coluna--;
 			break;
 		}
 		case 6:{
-			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha++;
 			break;
 		}
 		case 7:{
-			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha++;
 			jogador->coluna++;
 			break;
 		}
 	}
-	free(vizinhos);
 }
 
 //This method evaluates the neighbourhood and choose the better place to move on. But the validation is for each player per time
@@ -142,5 +176,3 @@ int possui_pokebolas(t_jogador jogador){
 void pokestop(t_jogador *jogador){
 	jogador->pokebolas +=1;
 }
-
-

@@ -4,6 +4,8 @@
 #include "Jogador.h"
 
 #define STR_SIZE 4
+#define NUM_VIZINHOS 8
+#define INVALIDO 7
 
 //This function dynamically alocates every player struct
 t_jogador *aloca_jogador(int numero_de_jogadores){
@@ -40,3 +42,49 @@ void exibe_jogadores(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
 		printf("id [%d] passos[%d] pokebolas[%d] pontos[%d] linha[%d] coluna[%d]\n", vetor_de_jogadores[i].id, vetor_de_jogadores[i].passos, vetor_de_jogadores[i].pokebolas, vetor_de_jogadores[i].pontos, vetor_de_jogadores[i].linha, vetor_de_jogadores[i].coluna);
 	}
 }
+
+//This method makes all players find places to walk
+void andar(t_jogador *vetor_de_jogadores, int numero_de_jogadores, int **mapa, int tamanho_do_mapa){
+	
+
+}
+
+//This method evaluates the neighbourhood and choose the better place to move on. But the validation is for each player per time
+int *explorar(int **mapa, int linha, int coluna, int tamanho_do_mapa){
+	int i=0, j=0, k=0, *vizinhos = NULL;
+	vizinhos = (int*) calloc(NUM_VIZINHOS, sizeof(int));
+
+	for(i=-1; i<=1; i++){
+		for(j=-1; j<=1; j++){
+			if((linha+i >= 0) && (linha+i <= tamanho_do_mapa) && (coluna+j >= 0) && (coluna+j <= tamanho_do_mapa)){
+				if(!(i == 0) || !(j == 0)){
+					vizinhos[k] = mapa[linha+i][coluna+j];
+					k++;
+				}
+			}
+			else{
+				vizinhos[k] = INVALIDO;
+				k++;
+			}
+		}
+	}
+	return vizinhos;
+}
+
+void caminho_percorrido(){
+
+}
+
+int possui_pokebolas(t_jogador jogador){
+	if(jogador.pokebolas > 0){
+		return 1;
+	}
+	else
+		return 0;
+}
+
+void pokestop(t_jogador *jogador){
+	jogador->pokebolas +=1;
+}
+
+

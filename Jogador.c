@@ -43,9 +43,57 @@ void exibe_jogadores(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
 	}
 }
 
-//This method makes all players find places to walk
-void andar(t_jogador *vetor_de_jogadores, int numero_de_jogadores, int **mapa, int tamanho_do_mapa){
-	
+//This method makes player find place to walk
+int andar(t_jogador *jogador, int numero_de_jogadores, int **mapa, int tamanho_do_mapa){
+	int i = 0, *vizinhos = NULL, maior = 0, indice_maior = 0;
+
+	vizinhos = explorar(mapa, jogador->linha, jogador->coluna, tamanho_do_mapa);
+
+	maior = vizinhos[0];
+	for(; i<NUM_VIZINHOS; i++){
+		if((vizinhos[i] > maior) && (vizinhos[i] != 7)){
+			maior = vizinhos[i];
+			indice_maior = i;
+		}
+	}
+	switch(indice_maior){
+		case 0:{
+			jogador->linha--;
+			jogador->coluna--;
+			break;
+		}
+		case 1:{
+			jogador->linha--;
+			break;
+		}
+		case 2:{
+			jogador->linha--;
+			jogador->coluna++;
+			break;
+		}
+		case 3:{
+			jogador->coluna--;
+			break;
+		}
+		case 4:{
+			jogador->coluna++;
+			break;
+		}
+		case 5:{
+			jogador->linha++;
+			jogador->coluna--;
+			break;
+		}
+		case 6:{
+			jogador->linha++;
+			break;
+		}
+		case 7:{
+			jogador->linha++;
+			jogador->coluna++;
+			break;
+		}
+	}
 
 }
 

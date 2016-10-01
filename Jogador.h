@@ -13,7 +13,7 @@ void inicia_player(t_jogador *vetor_de_jogadores, FILE *in, int numero_de_jogado
 
 void exibe_jogadores(t_jogador *vetor_de_jogadores, int numero_de_jogadores);
 
-void andar(t_jogador *vetor_de_jogadores, int numero_de_jogadores, int **mapa, int tamanho_do_mapa);
+int andar(t_jogador *jogador, int numero_de_jogadores, int **mapa, int tamanho_do_mapa);
 
 int *explorar(int **mapa, int linha, int coluna, int tamanho_do_mapa);
 

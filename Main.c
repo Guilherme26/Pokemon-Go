@@ -4,7 +4,7 @@
 
 int main(){
 //Declarations
-	int tamanho_mapa = 0, numero_de_jogadores = 0, *vizinhos = NULL;
+	int tamanho_mapa = 0, numero_de_jogadores = 0;
 	t_mapa mapa; 
 	t_jogador *vetor_de_jogadores;
 	FILE *in = fopen("entrada.txt", "r");
@@ -25,17 +25,6 @@ int main(){
 		inicia_player(vetor_de_jogadores, in, numero_de_jogadores);
 
 	fclose(in);
-
-	int i, j;
-	for(i=0; i<numero_de_jogadores; i++){
-
-		vizinhos = explorar(mapa.mapa, vetor_de_jogadores[i].linha, vetor_de_jogadores[i].coluna, tamanho_mapa);
-		for (j = 0; j < 8; j++){
-			printf("%d ", vizinhos[j]);
-		}
-
-		printf("\n\n");
-	}
 
 
 	return 0;

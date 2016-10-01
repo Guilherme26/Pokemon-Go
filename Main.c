@@ -26,6 +26,19 @@ int main(){
 
 	fclose(in);
 
+	// // exibe_jogadores(vetor_de_jogadores, numero_de_jogadores);//Debugger
+	// andar(&vetor_de_jogadores[0], numero_de_jogadores, mapa.mapa, tamanho_mapa);
+	// andar(&vetor_de_jogadores[0], numero_de_jogadores, mapa.mapa, tamanho_mapa);
+	// andar(&vetor_de_jogadores[0], numero_de_jogadores, mapa.mapa, tamanho_mapa);
+	// andar(&vetor_de_jogadores[0], numero_de_jogadores, mapa.mapa, tamanho_mapa);
+	// andar(&vetor_de_jogadores[0], numero_de_jogadores, mapa.mapa, tamanho_mapa);
+	// andar(&vetor_de_jogadores[0], numero_de_jogadores, mapa.mapa, tamanho_mapa);
+	
+	// andar(&vetor_de_jogadores[0], numero_de_jogadores, mapa.mapa, tamanho_mapa);
+	// printf("\n");//Debugger
+	// exibe_jogadores(vetor_de_jogadores, numero_de_jogadores);//Debugger
+	// printf("\n");//Debugger
+	// exibe_mapa(mapa.mapa, tamanho_mapa);
 
 	return 0;
 }

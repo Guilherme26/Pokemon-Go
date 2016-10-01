@@ -49,7 +49,7 @@ int andar(t_jogador *jogador, int numero_de_jogadores, int **mapa, int tamanho_d
 
 	vizinhos = explorar(mapa, jogador->linha, jogador->coluna, tamanho_do_mapa);
 
-	maior = vizinhos[0];
+
 	for(; i<NUM_VIZINHOS; i++){
 		if((vizinhos[i] > maior) && (vizinhos[i] != 7)){
 			maior = vizinhos[i];
@@ -58,43 +58,51 @@ int andar(t_jogador *jogador, int numero_de_jogadores, int **mapa, int tamanho_d
 	}
 	switch(indice_maior){
 		case 0:{
+			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha--;
 			jogador->coluna--;
 			break;
 		}
 		case 1:{
+			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha--;
 			break;
 		}
 		case 2:{
+			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha--;
 			jogador->coluna++;
 			break;
 		}
 		case 3:{
+			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->coluna--;
 			break;
 		}
 		case 4:{
+			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->coluna++;
 			break;
 		}
 		case 5:{
+			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha++;
 			jogador->coluna--;
 			break;
 		}
 		case 6:{
+			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha++;
 			break;
 		}
 		case 7:{
+			mapa[jogador->linha][jogador->coluna] = 7;
 			jogador->linha++;
 			jogador->coluna++;
 			break;
 		}
 	}
-
+	free(vizinhos);
 }
 
 //This method evaluates the neighbourhood and choose the better place to move on. But the validation is for each player per time

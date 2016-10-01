@@ -28,7 +28,7 @@ void exibe_mapa(int **mapa, int tamanho_mapa){
 	int i, j;
 	for (i=0; i<tamanho_mapa; i++)	{
 		for (j=0; j<tamanho_mapa; j++){
-			printf("%d", mapa[i][j]);
+			printf("%2d", mapa[i][j]);
 		}
 		printf("\n");
 	}

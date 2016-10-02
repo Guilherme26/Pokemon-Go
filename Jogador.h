@@ -22,6 +22,8 @@ int *explorar(int **mapa, int linha, int coluna, int tamanho_do_mapa);
 
 void caminho_percorrido();
 
+int vencedor(t_jogador *vetor_de_jogadores, int numero_de_jogadores);
+
 int possui_pokebolas(t_jogador jogador);
 
 void pokestop(t_jogador *jogador);

@@ -28,12 +28,14 @@ int main(){
 	for(i=0; i<numero_de_jogadores; i++){
 		int condicao = 1;
 		FLV(caminho_jogador, vetor_de_jogadores[i]);
+		// Repeat the loop until the player cannot move anymore
 		while(condicao){
 			condicao = andar(&vetor_de_jogadores[i], caminho_jogador, numero_de_jogadores, mapa.mapa, tamanho_mapa);
 		}
 
 		imprime_saida(caminho_jogador, vetor_de_jogadores[i], out);
 
+		//Restart the map for the next player
 		FILE *in = fopen("entrada.txt", "r");
 		fscanf(in, "%d", &tamanho_mapa);
 		inicia_mapa(mapa.mapa, in, tamanho_mapa);

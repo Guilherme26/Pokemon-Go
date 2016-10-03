@@ -33,6 +33,7 @@ void inicia_player(t_jogador *vetor_de_jogadores, FILE *in, int numero_de_jogado
 		vetor_de_jogadores[i].id = (i+1);
 		vetor_de_jogadores[i].pokebolas = 3;
 
+	//Initialize every possibility of pokemon
 		for (j=0; j<5; j++){
 			vetor_de_jogadores[i].pokemon[j] = 0;
 		}
@@ -53,6 +54,7 @@ int andar(t_jogador *jogador, t_lista *caminho_jogador,int numero_de_jogadores, 
 
 	vizinhos = explorar(mapa, jogador->linha, jogador->coluna, tamanho_do_mapa);
 
+	//When the current player doesn't have pokeballs, he search for a pokestop, and if he find's , his pokeballs increases
 	if(!pokebolas){
 		for(i=0; i<NUM_VIZINHOS; i++){
 			if((vizinhos[i]==6) && (vizinhos[i] != INVALIDO)){
@@ -65,6 +67,7 @@ int andar(t_jogador *jogador, t_lista *caminho_jogador,int numero_de_jogadores, 
 			}
 		}
 	}
+	//If player has pokeballs, he'll search for the stronger pokemon around him. Then he'll move and catch 
 	else{
 		for(i=0; i<NUM_VIZINHOS; i++){
 			if((vizinhos[i] > maior) && (vizinhos[i] != INVALIDO) && (vizinhos[i] != 6)){
@@ -81,7 +84,7 @@ int andar(t_jogador *jogador, t_lista *caminho_jogador,int numero_de_jogadores, 
 		jogador->pontos += maior;
 		return 1;
 	}
-
+	//If player doesn't have pokeballs nor pokestops nearby, he'll search for a better place to move. A place that causes the minimum of damage
 	if(!pokebolas){
 		for(i=0; i<NUM_VIZINHOS; i++){
 			if((vizinhos[i] == 0)){
@@ -105,6 +108,7 @@ int andar(t_jogador *jogador, t_lista *caminho_jogador,int numero_de_jogadores, 
 	free(vizinhos);
 }
 
+//Function that basically moves the player to the next position
 void move(t_jogador *jogador, int posicao){
 	switch(posicao){
 		case 0:{
@@ -169,11 +173,14 @@ int *explorar(int **mapa, int linha, int coluna, int tamanho_do_mapa){
 }
 
 
-//Pay attention to this function
+/*This function set's the set of winners of game
+First of all, a vector of winners is created and filled with all possible winners.
+Then it compares them all and define (If possible) just one winner. If isn't possible, the function returns all winners*/
 int *vencedor(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
 	int i, j, indice_maior = 0, maior_pontuacao = 0, *vencedores, empate = 0;
 	vencedores = (int*)calloc(numero_de_jogadores, sizeof(int));
 
+	//Try to choose a winner by the score
 	for(i=0; i<numero_de_jogadores; i++){
 		if(vetor_de_jogadores[i].pontos > maior_pontuacao){
 			maior_pontuacao = vetor_de_jogadores[i].pontos;
@@ -189,6 +196,7 @@ int *vencedor(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
 		}
 	}
 
+	//If don't have a winner yet, it tries to find one by the number of stronger pokemon that both have
 	if(empate){
 		for(i=0; i<empate; i++){
 			for(j=0; j<empate; j++){
@@ -203,6 +211,7 @@ int *vencedor(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
 			}
 		}
 	}
+	//If the draw persists, the function tries to elect a winner by the number of steps (The less the better)
 	if(empate){
 		for(i=0; i<empate; i++){
 			for(j=0; j<empate; j++){
@@ -221,6 +230,7 @@ int *vencedor(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
 	return vencedores;
 }
 
+//This function tells if player has any pokeball
 int possui_pokebolas(t_jogador jogador){
 	if(jogador.pokebolas > 0){
 		return 1;
@@ -229,10 +239,12 @@ int possui_pokebolas(t_jogador jogador){
 		return 0;
 }
 
+//If the player been at a pokestop, he earn a pokeball
 void pokestop(t_jogador *jogador){
 	jogador->pokebolas +=1;
 }
 
+//On free translate to english the initials FLV means create an empty list
 void FLV(t_lista *caminho_jogador, t_jogador jogador){
 	t_celula *no = (t_celula*) malloc(sizeof(t_celula));
 	no->prox = NULL;
@@ -251,6 +263,7 @@ int vazia(t_lista caminho_jogador){
 		return 0;
 }
 
+//This method saves all the way that the player have been
 void caminho_percorrido(t_lista *caminho_jogador, t_jogador jogador){
 	t_celula *no = (t_celula*) malloc(sizeof(t_celula));
 	
@@ -262,6 +275,7 @@ void caminho_percorrido(t_lista *caminho_jogador, t_jogador jogador){
 	caminho_jogador->ultimo = no;
 }
 
+//This method prints the outcomes of all time execution
 void imprime_saida(t_lista *caminho_jogador, t_jogador jogador, FILE *out){
 	fprintf(out, "J%d: %d ", jogador.id, jogador.pontos);
 	while(caminho_jogador->primeiro != NULL){

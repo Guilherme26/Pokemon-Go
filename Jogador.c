@@ -169,30 +169,57 @@ int *explorar(int **mapa, int linha, int coluna, int tamanho_do_mapa){
 }
 
 
-// //Pay attention to this function
-// int vencedor(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
-// 	int i, indice_maior = 0, maior_pontuacao = 0;
-// 	for(i=0; i<numero_de_jogadores; i++){
-// 		if(vetor_de_jogadores[i].pontos > maior_pontuacao){
-// 			maior_pontuacao = vetor_de_jogadores[i].pontos;
-// 			indice_maior = i;
-// 		}
-// 	}
-// 	for(i=0; i<numero_de_jogadores; i++){
-// 		if((vetor_de_jogadores[indice_maior].pontos == vetor_de_jogadores[i].pontos) && (indice_maior != i)){
-// 			if(vetor_de_jogadores[indice_maior].pokemon[4] < vetor_de_jogadores[i].pokemon[4]){
-// 				indice_maior = i;
-// 			}
-// 			else if((vetor_de_jogadores[indice_maior].pokemon[4] == vetor_de_jogadores[i].pokemon[4]) && (indice_maior != i)){
-// 				if(vetor_de_jogadores[indice_maior].passos > vetor_de_jogadores[i].passos){
-// 					indice_maior = i;
-// 				}
-// 			}
-// 		}
-// 	}
+//Pay attention to this function
+int *vencedor(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
+	int i, j, indice_maior = 0, maior_pontuacao = 0, *vencedores, empate = 0;
+	vencedores = (int*)calloc(numero_de_jogadores, sizeof(int));
 
-// 	return i;
-// }
+	for(i=0; i<numero_de_jogadores; i++){
+		if(vetor_de_jogadores[i].pontos > maior_pontuacao){
+			maior_pontuacao = vetor_de_jogadores[i].pontos;
+			indice_maior = i;
+		}
+	}
+	vencedores[indice_maior] = 1;
+	for(i=0, j=0; i<numero_de_jogadores; i++){
+		if((vetor_de_jogadores[indice_maior].pontos == vetor_de_jogadores[i].pontos) && (indice_maior != i)){
+			vencedores[j] = i;
+			j++;
+			empate++;
+		}
+	}
+
+	if(empate){
+		for(i=0; i<empate; i++){
+			for(j=0; j<empate; j++){
+				if((vetor_de_jogadores[vencedores[i]].pokemon[4] > vetor_de_jogadores[vencedores[j]].pokemon[4]) && (j!=i)){
+					vencedores[j] = 0;
+					empate--;
+				}
+				else if((vetor_de_jogadores[vencedores[i]].pokemon[4] < vetor_de_jogadores[vencedores[j]].pokemon[4]) && (j!=i)){
+					vencedores[i] = 0;
+					empate--;
+				}
+			}
+		}
+	}
+	if(empate){
+		for(i=0; i<empate; i++){
+			for(j=0; j<empate; j++){
+				if((vetor_de_jogadores[vencedores[i]].passos < vetor_de_jogadores[vencedores[j]].passos) && (j!=i)){
+					vencedores[j] = 0;
+					empate--;
+				}
+				else if((vetor_de_jogadores[vencedores[i]].passos > vetor_de_jogadores[vencedores[j]].passos) && (j!=i)){
+					vencedores[i] = 0;
+					empate--;
+				}
+			}
+		}
+	}
+
+	return vencedores;
+}
 
 int possui_pokebolas(t_jogador jogador){
 	if(jogador.pokebolas > 0){
@@ -236,7 +263,7 @@ void caminho_percorrido(t_lista *caminho_jogador, t_jogador jogador){
 }
 
 void imprime_saida(t_lista *caminho_jogador, t_jogador jogador, FILE *out){
-	fprintf(out, "J%d: ", jogador.id);
+	fprintf(out, "J%d: %d ", jogador.id, jogador.pontos);
 	while(caminho_jogador->primeiro != NULL){
 		fprintf(out, "%d,%d ", caminho_jogador->primeiro->linha, caminho_jogador->primeiro->coluna);
 		caminho_jogador->primeiro = caminho_jogador->primeiro->prox;

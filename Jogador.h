@@ -31,7 +31,7 @@ void move(t_jogador *jogador, int posicao);
 
 int *explorar(int **mapa, int linha, int coluna, int tamanho_do_mapa);
 
-int vencedor(t_jogador *vetor_de_jogadores, int numero_de_jogadores);
+int *vencedor(t_jogador *vetor_de_jogadores, int numero_de_jogadores);
 
 int possui_pokebolas(t_jogador jogador);
 

@@ -34,17 +34,19 @@ int main(){
 
 		imprime_saida(caminho_jogador, vetor_de_jogadores[i], out);
 
-		exibe_mapa(mapa.mapa, tamanho_mapa); //Debugger
-
 		FILE *in = fopen("entrada.txt", "r");
 		fscanf(in, "%d", &tamanho_mapa);
 		inicia_mapa(mapa.mapa, in, tamanho_mapa);
 		fclose(in);
-		
-		printf("\n\n");
 	}
 
-	fprintf(out, "VENCEDOR: J%d\n", 1);
+
+	int *vencedores = vencedor(vetor_de_jogadores, numero_de_jogadores);
+	fprintf(out, "VENCEDOR: ");
+	for(i=0; i<numero_de_jogadores; i++){
+		if(vencedores[i] == 1)
+			fprintf(out, "J%d ", i+1);
+	}
 
 	fclose(out);
 	return 0;

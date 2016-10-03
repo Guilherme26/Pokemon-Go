@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "Jogador.h"
-#include "Lista.h"
 
 #define STR_SIZE 4
 #define NUM_VIZINHOS 8
@@ -49,7 +48,7 @@ void exibe_jogadores(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
 }
 
 //This method makes player find place to walk
-int andar(t_jogador *jogador, int numero_de_jogadores, int **mapa, int tamanho_do_mapa){
+int andar(t_jogador *jogador, t_lista *caminho_jogador,int numero_de_jogadores, int **mapa, int tamanho_do_mapa){
 	int i = 0, *vizinhos = NULL, maior = -1, indice_maior = -1, pokebolas = possui_pokebolas(*jogador);
 
 	vizinhos = explorar(mapa, jogador->linha, jogador->coluna, tamanho_do_mapa);
@@ -58,6 +57,7 @@ int andar(t_jogador *jogador, int numero_de_jogadores, int **mapa, int tamanho_d
 		for(i=0; i<NUM_VIZINHOS; i++){
 			if((vizinhos[i]==6) && (vizinhos[i] != INVALIDO)){
 				mapa[jogador->linha][jogador->coluna] = INVALIDO;
+				caminho_percorrido(caminho_jogador, *jogador);
 				move(jogador, i);
 				jogador->passos++;
 				pokestop(jogador);
@@ -73,6 +73,7 @@ int andar(t_jogador *jogador, int numero_de_jogadores, int **mapa, int tamanho_d
 			}
 		}
 		mapa[jogador->linha][jogador->coluna] = INVALIDO;
+		caminho_percorrido(caminho_jogador, *jogador);
 		move(jogador, indice_maior);
 		jogador->passos++;
 		jogador->pokebolas--;
@@ -85,6 +86,7 @@ int andar(t_jogador *jogador, int numero_de_jogadores, int **mapa, int tamanho_d
 		for(i=0; i<NUM_VIZINHOS; i++){
 			if((vizinhos[i] == 0)){
 				mapa[jogador->linha][jogador->coluna] = INVALIDO;
+				caminho_percorrido(caminho_jogador, *jogador);
 				move(jogador, i);
 				jogador->passos++;
 				return 1;
@@ -93,6 +95,7 @@ int andar(t_jogador *jogador, int numero_de_jogadores, int **mapa, int tamanho_d
 		for(i=0; i<NUM_VIZINHOS; i++){
 			if(vizinhos[i] != INVALIDO){
 				mapa[jogador->linha][jogador->coluna] = INVALIDO;
+				caminho_percorrido(caminho_jogador, *jogador);
 				move(jogador, i);
 				jogador->passos++;
 				return 1;
@@ -165,10 +168,6 @@ int *explorar(int **mapa, int linha, int coluna, int tamanho_do_mapa){
 	return vizinhos;
 }
 
-void caminho_percorrido(){
-
-}
-
 
 // //Pay attention to this function
 // int vencedor(t_jogador *vetor_de_jogadores, int numero_de_jogadores){
@@ -205,4 +204,42 @@ int possui_pokebolas(t_jogador jogador){
 
 void pokestop(t_jogador *jogador){
 	jogador->pokebolas +=1;
+}
+
+void FLV(t_lista *caminho_jogador, t_jogador jogador){
+	t_celula *no = (t_celula*) malloc(sizeof(t_celula));
+	no->prox = NULL;
+	caminho_jogador->primeiro = no;
+	caminho_jogador->ultimo = no;
+
+	//Set player's coordinate
+	caminho_jogador->primeiro->linha = jogador.linha;
+	caminho_jogador->primeiro->coluna = jogador.coluna;
+}
+
+int vazia(t_lista caminho_jogador){
+	if(caminho_jogador.primeiro == caminho_jogador.ultimo)
+		return 1;
+	else
+		return 0;
+}
+
+void caminho_percorrido(t_lista *caminho_jogador, t_jogador jogador){
+	t_celula *no = (t_celula*) malloc(sizeof(t_celula));
+	
+	no->linha = jogador.linha;
+	no->coluna = jogador.coluna;
+	no->prox = NULL;
+
+	caminho_jogador->ultimo->prox = no;
+	caminho_jogador->ultimo = no;
+}
+
+void imprime_saida(t_lista *caminho_jogador, t_jogador jogador, FILE *out){
+	fprintf(out, "J%d: ", jogador.id);
+	while(caminho_jogador->primeiro != NULL){
+		fprintf(out, "%d,%d ", caminho_jogador->primeiro->linha, caminho_jogador->primeiro->coluna);
+		caminho_jogador->primeiro = caminho_jogador->primeiro->prox;
+	}
+	fprintf(out, "\n");
 }
